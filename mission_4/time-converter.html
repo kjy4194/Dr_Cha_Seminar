@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>글로벌 회의 시간 변환기</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:#0a0f1e;min-height:100vh;color:#e2e8f8;overflow-x:hidden}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(99,179,237,.04)1px,transparent 1px),linear-gradient(90deg,rgba(99,179,237,.04)1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);opacity:.15;pointer-events:none;z-index:0}
+.orb1{width:600px;height:600px;background:#3b82f6;top:-200px;left:-150px}
+.orb2{width:400px;height:400px;background:#6366f1;bottom:-100px;right:-100px}
+.wrap{position:relative;z-index:1;max-width:740px;margin:0 auto;padding:40px 20px 60px}
+.header{text-align:center;margin-bottom:36px}
+.badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#60a5fa;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);padding:4px 14px;border-radius:20px;margin-bottom:14px}
+h1{font-family:'Noto Serif KR',serif;font-size:clamp(22px,5vw,36px);font-weight:700;color:#f0f6ff;line-height:1.3;letter-spacing:-.02em;margin-bottom:8px}
+.subtitle{font-size:13px;color:#6b7fa8;font-weight:300}
+.card{background:rgba(15,23,42,.85);border:1px solid rgba(99,179,237,.12);border-radius:20px;padding:28px;backdrop-filter:blur(20px);box-shadow:0 4px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+@media(max-width:520px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:7px}
+label{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#7090b8;font-weight:500;font-family:'IBM Plex Mono',monospace;display:block;margin-bottom:7px}
+input{background:rgba(255,255,255,.04);border:1px solid rgba(99,179,237,.15);border-radius:10px;padding:11px 14px;color:#e2e8f8;font-size:14px;font-family:'IBM Plex Mono',monospace;outline:none;transition:border-color .2s,background .2s,box-shadow .2s;width:100%;appearance:none;-webkit-appearance:none;color-scheme:dark}
+input:focus{border-color:rgba(96,165,250,.6);background:rgba(96,165,250,.06);box-shadow:0 0 0 3px rgba(96,165,250,.1)}
+.tz-fixed{display:flex;align-items:center;gap:10px;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:11px 16px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#7cb8f0}
+.tz-fixed .flag{font-size:18px}
+.tz-fixed .name{font-weight:600;color:#a8d0f8}
+.tz-fixed .abbr{margin-left:auto;font-size:10px;padding:2px 8px;background:rgba(96,165,250,.15);border-radius:5px;color:#60a5fa;letter-spacing:.08em}
+.btn{width:100%;padding:13px 24px;background:linear-gradient(135deg,#2563eb,#4f46e5);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;letter-spacing:.04em;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 24px rgba(37,99,235,.35);position:relative;overflow:hidden}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,99,235,.5)}
+.btn:active{transform:translateY(0)}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);border-radius:inherit}
+.err{display:flex;align-items:center;gap:8px;color:#fc8181;background:rgba(252,129,129,.08);border:1px solid rgba(252,129,129,.2);border-radius:10px;padding:11px 14px;font-size:13px;margin-top:14px}
+.res-section{margin-top:26px}
+.res-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a6180;margin-bottom:12px}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.res-grid{grid-template-columns:1fr}}
+.rc{background:rgba(255,255,255,.03);border:1px solid rgba(99,179,237,.1);border-radius:14px;padding:18px;position:relative;overflow:hidden;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s,border-color .2s,background .2s}
+.rc.v{opacity:1;transform:translateY(0)}
+.rc:nth-child(1){transition-delay:0s}
+.rc:nth-child(2){transition-delay:.07s}
+.rc:nth-child(3){transition-delay:.14s}
+.rc:nth-child(4){transition-delay:.21s}
+.rc:hover{border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.04)}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#3b82f6,#6366f1);opacity:0;transition:opacity .2s}
+.rc:hover::before{opacity:1}
+.rc-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.rc-flag{font-size:18px;line-height:1}
+.rc-city{font-size:12px;font-weight:700;color:#94b4d4;letter-spacing:.03em}
+.rc-abbr{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;background:rgba(96,165,250,.1);border-radius:5px;color:#60a5fa;letter-spacing:.06em}
+.rc-time{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;color:#f0f6ff;letter-spacing:-.02em;line-height:1;margin-bottom:5px}
+.rc-date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5a7090}
+.rc-wd{display:inline-block;font-size:10px;color:#4a90b8;background:rgba(74,144,184,.1);border-radius:4px;padding:1px 5px;margin-left:5px}
+.hint{margin-top:18px;text-align:center;font-size:11px;color:#2a3a52;font-family:'IBM Plex Mono',monospace}
+.email-box{margin-top:20px;background:rgba(15,23,42,.85);border:1px solid rgba(99,179,237,.12);border-radius:16px;padding:20px 22px;backdrop-filter:blur(20px);box-shadow:0 4px 24px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);transition:opacity .5s .3s,transform .5s .3s}
+.email-box.v{opacity:1;transform:translateY(0)}
+.email-box-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a6180;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.email-row{display:flex;gap:10px;align-items:stretch}
+.email-input{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(99,179,237,.15);border-radius:10px;padding:11px 14px;color:#c8daf4;font-size:12.5px;font-family:'IBM Plex Mono',monospace;outline:none;cursor:text;resize:none;line-height:1.5;transition:border-color .2s,background .2s}
+.email-input:focus{border-color:rgba(96,165,250,.4);background:rgba(96,165,250,.04)}
+.copy-btn{flex-shrink:0;padding:0 18px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);border-radius:10px;color:#60a5fa;font-size:13px;font-family:'Noto Sans KR',sans-serif;font-weight:700;cursor:pointer;letter-spacing:.03em;transition:background .2s,border-color .2s,transform .15s,color .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.copy-btn:hover{background:rgba(96,165,250,.22);border-color:rgba(96,165,250,.5);transform:translateY(-1px)}
+.copy-btn:active{transform:translateY(0)}
+.copy-btn.copied{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.35);color:#4ade80}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useRef}=React;
+
+const BASE_TZ="Asia/Seoul";
+
+const RTIMEZONES=[
+  {value:"America/Los_Angeles",label:"미국 서부",flag:"🇺🇸"},
+  {value:"America/New_York",label:"미국 동부",flag:"🇺🇸"},
+  {value:"Europe/London",label:"영국",flag:"🇬🇧"},
+  {value:"Europe/Berlin",label:"독일",flag:"🇩🇪"},
+];
+
+function toUTCMs(dateStr,timeStr,tz){
+  const [y,mo,d]=dateStr.split("-").map(Number);
+  const [h,mi]=timeStr.split(":").map(Number);
+  const fmt=new Intl.DateTimeFormat("en-US",{timeZone:tz,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
+  let utcMs=Date.UTC(y,mo-1,d,h,mi,0);
+  for(let i=0;i<4;i++){
+    const p={};fmt.formatToParts(new Date(utcMs)).forEach(({type,value})=>{p[type]=value;});
+    const tzMs=Date.UTC(parseInt(p.year),parseInt(p.month)-1,parseInt(p.day),parseInt(p.hour)%24,parseInt(p.minute),parseInt(p.second));
+    utcMs=utcMs+(Date.UTC(y,mo-1,d,h,mi,0)-tzMs);
+  }
+  return utcMs;
+}
+
+function formatInTz(utcMs,tz){
+  const f=new Intl.DateTimeFormat("ko-KR",{timeZone:tz,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",weekday:"short",hour12:false});
+  const p={};f.formatToParts(new Date(utcMs)).forEach(({type,value})=>{p[type]=value;});
+  return{date:`${p.year}.${p.month}.${p.day}`,time:`${p.hour}:${p.minute}`,weekday:p.weekday};
+}
+
+function getAbbr(utcMs,tz){
+  try{
+    const parts=new Intl.DateTimeFormat("en-US",{timeZone:tz,timeZoneName:"short"}).formatToParts(new Date(utcMs));
+    const t=parts.find(p=>p.type==="timeZoneName");
+    return t?t.value:"";
+  }catch{return"";}
+}
+
+function today(){
+  const n=new Date();
+  return`${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,"0")}-${String(n.getDate()).padStart(2,"0")}`;
+}
+function nowTime(){
+  const n=new Date();
+  return`${String(n.getHours()).padStart(2,"0")}:${String(n.getMinutes()).padStart(2,"0")}`;
+}
+
+function buildEmailLine(date,time,results){
+  const parts=results.map(r=>`${r.flag} ${r.label} ${r.time} (${r.abbr})`).join("  ·  ");
+  return`📅 ${date} ${time} (KST)  →  ${parts}`;
+}
+
+function App(){
+  const [date,setDate]=useState(today());
+  const [time,setTime]=useState(nowTime());
+  const [results,setResults]=useState(null);
+  const [error,setError]=useState("");
+  const [show,setShow]=useState(false);
+  const [copied,setCopied]=useState(false);
+  const copyTimer=useRef(null);
+
+  function validate(){
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) return"날짜 형식이 올바르지 않습니다 (yyyy-mm-dd)";
+    if(!/^\d{2}:\d{2}$/.test(time)) return"시각 형식이 올바르지 않습니다 (HH:mm)";
+    const[h,m]=time.split(":").map(Number);
+    if(h>23||m>59) return"시각 범위를 확인해주세요 (00:00 ~ 23:59)";
+    if(isNaN(new Date(date+"T"+time).getTime())) return"유효하지 않은 날짜입니다";
+    return"";
+  }
+
+  function convert(){
+    const err=validate();
+    if(err){setError(err);setResults(null);return;}
+    setError("");
+    try{
+      const utcMs=toUTCMs(date,time,BASE_TZ);
+      const res=RTIMEZONES.map(({value,label,flag})=>{
+        const{date:d,time:t,weekday}=formatInTz(utcMs,value);
+        const abbr=getAbbr(utcMs,value);
+        return{value,label,flag,date:d,time:t,weekday,abbr};
+      });
+      setResults(res);
+      setShow(false);
+      setCopied(false);
+      setTimeout(()=>setShow(true),30);
+    }catch(e){setError("변환 중 오류: "+e.message);}
+  }
+
+  function handleCopy(){
+    if(!results) return;
+    const line=buildEmailLine(date,time,results);
+    navigator.clipboard.writeText(line).then(()=>{
+      setCopied(true);
+      clearTimeout(copyTimer.current);
+      copyTimer.current=setTimeout(()=>setCopied(false),2000);
+    }).catch(()=>{
+      const ta=document.createElement("textarea");
+      ta.value=line;document.body.appendChild(ta);ta.select();
+      document.execCommand("copy");document.body.removeChild(ta);
+      setCopied(true);
+      clearTimeout(copyTimer.current);
+      copyTimer.current=setTimeout(()=>setCopied(false),2000);
+    });
+  }
+
+  const emailLine=results?buildEmailLine(date,time,results):"";
+
+  return(
+    <div className="wrap">
+      <div className="header">
+        <div className="badge">🌍 Timezone Converter</div>
+        <h1>글로벌 회의 시간 변환기</h1>
+        <p className="subtitle">한국 시간 기준으로 미국·유럽 주요 도시의 현지 시각을 알려드립니다</p>
+      </div>
+
+      <div className="card">
+        <div className="form-grid">
+          <div className="field">
+            <label>날짜</label>
+            <input type="date" value={date} onChange={e=>setDate(e.target.value)}/>
+          </div>
+          <div className="field">
+            <label>시각 (24시간제)</label>
+            <input type="time" value={time} onChange={e=>setTime(e.target.value)}/>
+          </div>
+        </div>
+
+        <div style={{marginBottom:"18px"}}>
+          <label>기준 타임존</label>
+          <div className="tz-fixed">
+            <span className="flag">🇰🇷</span>
+            <span className="name">한국 표준시 — Asia/Seoul</span>
+            <span className="abbr">KST</span>
+          </div>
+        </div>
+
+        <button className="btn" onClick={convert}>⏱ 변환하기</button>
+        {error&&<div className="err"><span>⚠️</span><span>{error}</span></div>}
+      </div>
+
+      {results&&(
+        <div className="res-section">
+          <div className="res-label">변환 결과 — {date} {time} (KST)</div>
+          <div className="res-grid">
+            {results.map(r=>(
+              <div key={r.value} className={`rc${show?" v":""}`}>
+                <div className="rc-head">
+                  <span className="rc-flag">{r.flag}</span>
+                  <span className="rc-city">{r.label}</span>
+                  <span className="rc-abbr">{r.abbr}</span>
+                </div>
+                <div className="rc-time">{r.time}</div>
+                <div className="rc-date">{r.date}<span className="rc-wd">{r.weekday}</span></div>
+              </div>
+            ))}
+          </div>
+          <div className="hint">모든 시간대 변환은 브라우저 내장 Intl API 기반</div>
+
+          <div className={`email-box${show?" v":""}`}>
+            <div className="email-box-label">
+              <span>✉️</span>
+              <span>이메일 복사용 한 줄 요약</span>
+            </div>
+            <div className="email-row">
+              <textarea
+                className="email-input"
+                rows={2}
+                readOnly
+                value={emailLine}
+                onClick={e=>e.target.select()}
+              />
+              <button className={`copy-btn${copied?" copied":""}`} onClick={handleCopy}>
+                {copied?"✓ 복사됨":"📋 복사"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
