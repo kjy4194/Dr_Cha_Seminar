@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "0def55ffe1894e26",
+        "id": "4b85d40957375374",
         "type": "tabs",
         "children": [
           {
-            "id": "1acd1d70c0de7ff1",
+            "id": "756dc7df056f520b",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -178,7 +178,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "1acd1d70c0de7ff1",
+  "active": "756dc7df056f520b",
   "lastOpenFiles": [
     "Phase2_Claude_Code_자동화_태스크.md",
     "misson_2/3_계획및 실행2.png",
