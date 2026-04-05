@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0def55ffe1894e26",
+        "id": "a6d82dc7971d0861",
         "type": "tabs",
         "children": [
           {
-            "id": "1acd1d70c0de7ff1",
+            "id": "c0f3c6afefa1b4a7",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "mission_5/9회차_사전과제_Vibe_Kanban_멀티에이전트_관리.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "9회차_사전과제_Vibe_Kanban_멀티에이전트_관리"
             }
           }
         ]
@@ -26,6 +30,26 @@
     "id": "56fae458655c5303",
     "type": "split",
     "children": [
+      {
+        "id": "3bfdb2c99b6941c6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "727bfe638b64b713",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "mission_5/9회차_사전과제_Vibe_Kanban_멀티에이전트_관리.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "9회차_사전과제_Vibe_Kanban_멀티에이전트_관리"
+            }
+          }
+        ]
+      },
       {
         "id": "29609faea4ba3034",
         "type": "tabs",
@@ -40,7 +64,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "파일 탐색기"
             }
           },
           {
@@ -74,7 +98,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "ae0933d31fdf555d",
@@ -169,61 +193,61 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false
     }
   },
-  "active": "1acd1d70c0de7ff1",
+  "active": "c0f3c6afefa1b4a7",
   "lastOpenFiles": [
-    "Phase2_Claude_Code_자동화_태스크.md",
-    "misson_2/3_계획및 실행2.png",
-    "misson_2/2_계획및 실행1.png",
-    "misson_2/Phase2_일일업무_Agent화 설계문서.md",
-    "misson_2/daily_report_20260219.md",
-    "misson_2/2_계획및 실험1.png",
-    "misson_2/1_요청.png",
-    "misson_2/4_결과.png",
-    "misson_2/3_계획및 실험 2.png",
-    "퇴직준비세미나_Phase2_사전과제_공지.md",
-    "퇴직준비세미나_1회차_세미나_공지.md",
-    "misson_2/이메일.hwpx",
-    "misson_2/list.md",
-    "misson_2/업무 목록.md",
-    "misson_2/새 Text Document.txt",
-    "Phase2_일일업무_Agent화 설계문서.md",
-    "Phase2_일일업무",
-    "misson_2/capture.pptx",
-    "misson_2/~$capture.pptx",
-    "misson_2",
-    "기러기",
-    "퇴직준비세미나_Phase1-2_사전과제_공지.md",
-    "퇴직준비세미나_Phase1_사전과제_공지.md",
-    "Phase1-2_프롬프트_실전과제.md",
-    "Phase1_기본환경설정_도구설치.md",
-    "퇴직준비세미나_자율학습_가이드.md",
-    "README.md",
-    "커리큘럼_로드맵.png",
-    "misson_1_2/환각_점검_결과.md",
-    "misson_1_2/프롬프트_개선_히스토리.md",
-    "misson_1_2/Phase1-2_prompt_v2.md",
-    "misson_1_2/Phase1-2_프롬프트_실전과제_김정엽.md",
-    "Phase1-2_prompt_v2.md",
-    "Phase1-2_prompt_v1.md",
-    "Phase1-2_프롬프트_실전과제_김정엽.md",
-    "프롬프트_개선_히스토리.md",
-    "환각_점검_결과.md",
-    "Phase1-2_prompt_v3.md",
-    "V1_out.md",
-    "Templates",
-    "Archive",
-    "Resourses",
-    "mission_0/오Github저장소내_옵시디언 볼트폴더.png",
-    "mission_0/python--version.png",
-    "mission_0/node-v.png"
+    "mission_5/9회차_사전과제_Vibe_Kanban_멀티에이전트_관리.md",
+    "mission_5/커리큘럼_로드맵.png",
+    "mission_5/10회차_사전과제_T자형_역량_종합실습.md",
+    "mission_5/9-10회공지.md",
+    "mission_4/7-8회차_사전과제_디스포저블_앱_제작.md",
+    "mission_4/가이드_타임존_회의시간_변환_앱_제작.md",
+    "mission_4/Flywheel_사이클_경험보고서.md",
+    "mission_4/차박사 제출용 이메일.md",
+    "mission_4/앱_캡쳐파일.png",
+    "mission_4/7회차 8회차 사전과제_공지.md",
+    "무제.md",
+    "무제 1.md",
+    "mission_4/사용 프롬프트.md",
+    "mission_4/캡쳐1.png",
+    "mission_4/time-converter.html",
+    "mission_3/３그래프뷰.png",
+    "mission_3/２양방향링크연결.png",
+    "mission_3/１폴더구조.png",
+    "mission_3",
+    "mission_2/이메일.hwpx",
+    "mission_2/Phase2_일일업무_Agent화 설계문서.md",
+    "mission_2/list.md",
+    "mission_2/daily_report_20260219.md",
+    "mission_2/capture.pptx",
+    "mission_2/4_결과.png",
+    "mission_2/2_계획및 실행1.png",
+    "mission_2/3_계획및 실행2.png",
+    "mission_2/1_요청.png",
+    "mission_2",
+    "mission_1_2/환각_점검_결과.md",
+    "mission_1_2/Phase1-2_프롬프트_실전과제_김정엽.md",
+    "mission_1_2/프롬프트_개선_히스토리.md",
+    "mission_1_2/Phase1-2_prompt_v3.md",
+    "mission_1_2/Phase1-2_prompt_v2.md",
+    "mission_1_2/Phase1-2_prompt_v1.md",
+    "mission_1_2",
+    "mission_4",
+    "5-6회차_사전과제_Obsidian_PARA_구조_구축.md",
+    "7회차 8회차 사전과제_공지.md",
+    "mission4/7-8회차_사전과제_디스포저블_앱_제작.md",
+    "mission4",
+    "새 폴더",
+    "퇴직준비세미나_5-6회차_사전과제_공지.md",
+    "Resourses/도구사용법/Obsidian_활용법_정리.md",
+    "Projects/기본사업"
   ]
 }
